@@ -21,7 +21,7 @@
             $seguidos = 0;
     }
     $fin = microtime(true);
-    $tiempo = $fin - $ini;
+    $tiempo = ($fin - $ini)*1000;
     echo "Han salido tres 6 seguidos tras generar $contador números en " .
         number_format($tiempo, 6) . " milisegundos";
     ?>
