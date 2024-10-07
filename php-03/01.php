@@ -17,10 +17,11 @@
     {
         $arr = [];
         for ($i = 0; $i < 20; $i++)
-            array_push($arr, rand(1, 10));
+            array_push($arr, rand(1, 15));
         return $arr;
     }
     $array = createArray();
+
     function drawArray($array)
     {
         foreach ($array as $value)
@@ -29,27 +30,31 @@
 
     function calcMax($array)
     {
-        $max = 0;
-        foreach ($array as $value)
-            if ($value > $array[$value - 1])
-                $max = $value;
-        echo "<th>$max</th>";
+        echo "<h3>Valor que más grande: " . max($array) . "</h3>";
     }
     function calcMin($array)
     {
-
+        echo "<h3>Valor que más pequeño: " . min($array) . "</h3>";
     }
     function calcSame($array)
     {
+        $same = 0;
+        foreach ($array as $value)
+            for ($i = 0; $i < count($array); $i++)
+                if ($array[$i] == $value)
+                    $same++;
 
+        echo "<h3>Valor que más se repite: $same</h3>";
     }
     ?>
 </head>
 
 <body>
     <table>
-        <tr><?= drawArray($array) ?></tr>
         <tr><?= calcMax($array) ?></tr>
+        <tr><?= calcMin($array) ?></tr>
+        <tr><?= calcSame($array) ?></tr>
+        <tr><?= drawArray($array) ?></tr>
     </table>
 </body>
 
