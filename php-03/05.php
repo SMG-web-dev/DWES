@@ -19,19 +19,25 @@
     <?php
     function createBonoloto()
     {
-        for ($i = 0; $i < 6; $i++) {
-            $arr[$i] = random_int(1, 49);
+        $arr = [];
+        while (count($arr) < 5) {
+            $num = random_int(1, 49);
+            if (!in_array($num, $arr))
+                $arr[] = $num;
         }
+        sort($arr);
         return $arr;
     }
-    function showBonoloto($array)
+    function createComplementario()
     {
-        foreach ($array as $value) {
-            if (count($array) == $array[$value])
-                echo "<th>Complementario " . $value . "</th>";
-            else
-                echo "<th>" . $value . "</th>";
-        }
+        $num = random_int(1, 49);
+        return $num;
+    }
+    function showBonoloto($array, $num)
+    {
+        foreach ($array as $value)
+            echo "<th>" . $value . "</th>";
+        echo "<th>Complementario: $num</th>";
     }
 
     ?>
@@ -40,7 +46,7 @@
 <body>
     <table>
         <tr>
-            <?= showBonoloto(createBonoloto()) ?>
+            <?= showBonoloto(createBonoloto(), createComplementario()) ?>
         </tr>
     </table>
 </body>
