@@ -14,7 +14,7 @@ function run()
 function showPlayer()
 {
     $player = getPlayer();
-    ?>
+?>
     <!DOCTYPE html>
     <html lang="es">
 
@@ -30,43 +30,38 @@ function showPlayer()
         <div class="container">
             <h2>Datos del Jugador</h2>
             <div class="info">
-                <b>Nombre:</b>
-                <p> <?php echo htmlspecialchars($player->nombre); ?></p>
-                <b>Alias:</b>
-                <p> <?php echo htmlspecialchars($player->alias); ?></p>
-                <b>Edad:</b>
-                <p> <?php echo htmlspecialchars($player->edad); ?></p>
-                <b>Armas seleccionadas:</b>
-                <p> <?php if (!empty($player->armas))
-                    echo htmlspecialchars(implode(', ', $player->armas));
-                else
-                    echo 'No hay armas seleccionadas.';
-                ?></p>
-                <b>¿Practica artes mágicas?:</b>
-                <p> <?php echo $player->magia ?></p>
+                <p><b>Nombre:</b> <?php echo htmlspecialchars($player->nombre); ?></p>
+                <p><b>Alias:</b> <?php echo htmlspecialchars($player->alias); ?></p>
+                <p><b>Edad:</b> <?php echo htmlspecialchars($player->edad); ?></p>
+                <p><b>Armas:</b> <?php
+                                    if (!empty($player->armas))
+                                        echo htmlspecialchars(implode(', ', $player->armas));
+                                    else
+                                        echo 'No hay armas seleccionadas.';
+                                    ?></p>
+                <p><b>¿Practica artes mágicas?:</b> <?php echo $player->magia ?></p>
             </div>
-            <?php if ($player->imagen): ?>
-                <div class="image-container">
-                    <img src="<?php echo $player->imagen; ?>">
-                </div>
-            <?php else: ?>
-                <b>No se subió ninguna imagen.</b>
-                <div class="image-container">
-                    <img src="calavera.png" alr="Imagen">
-                </div>
-            <?php endif; ?>
+            <div class="image-container">
+                <?php if ($player->imagen): ?>
+                    <img src="<?php echo $player->imagen; ?>" alt="Imagen del jugador">
+                <?php else: ?>
+                    <p><b>No se subió ninguna imagen.</b></p>
+                    <img src="calavera.png" alt="Imagen por defecto">
+                    <p>Error al subir la imagen</p>
+                <?php endif; ?>
+            </div>
         </div>
     </body>
 
     </html>
-    <?php
+<?php
 }
 
 function getImage()
 {
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
         $uploads_dir = 'uploads/';
-        createUploadDirectory($uploads_dir); // Crea el directorio si no existe
+        createUploadDirectory($uploads_dir);
 
         $tmp_name = $_FILES['imagen']['tmp_name'];
         $name = basename($_FILES['imagen']['name']);
@@ -76,9 +71,9 @@ function getImage()
         $validation_result = validateImageUpload($_FILES['imagen']);
         if ($validation_result === true) {
             move_uploaded_file($tmp_name, $target_file);
-            return $target_file; // Retorna la ruta del archivo subido
+            return $target_file; // ruta del archivo subido
         } else {
-            echo $validation_result; // Muestra el mensaje de error
+            echo $validation_result; // mensaje de error
             return null;
         }
     }
@@ -89,15 +84,14 @@ function createUploadDirectory($directory)
 {
     if (!file_exists($directory))
         mkdir($directory, 0755, true);
-
 }
 
 function validateImageUpload($file)
 {
     if (!isImage($file['tmp_name']))
-        return "Error: El archivo subido no es una imagen válida.";
+        return false;
     if (!isFileSizeValid($file['size']))
-        return "Error: El archivo excede el tamaño máximo permitido de 2 MB.";
+        return false;
     return true;
 }
 
@@ -140,5 +134,6 @@ function getArmas()
 
 function getMagia()
 {
-    return ($_POST["magia"] === "si") ? "Si" : "No";
+    if (isset($_POST["magia"]))
+        return ($_POST["magia"] === "si") ? "Si" : "No";
 }

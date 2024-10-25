@@ -12,7 +12,7 @@
 <body>
     <div class="container">
         <h1>Formulario Jugador</h1>
-        <form action="index.php" method="post">
+        <form action="index.php" method="post" enctype="multipart/form-data">
             <label for="nombre"><b>Nombre:</b></label>
             <input type="text" id="nombre" name="nombre" required>
 
@@ -36,9 +36,9 @@
 
             <div class="radio-group">
                 <label>¿Practica artes mágicas?</label><br>
-                <input type="radio" id="si" name="magia" value="si">
+                <input type="radio" id="si" name="magia" value="si" required>
                 <label for="si"><b>Sí</b></label><br>
-                <input type="radio" id="no" name="magia" value="no">
+                <input type="radio" id="no" name="magia" value="no" required>
                 <label for="no"><b>No</b></label>
             </div>
 
@@ -46,8 +46,8 @@
             <input type="file" id="imagen" name="imagen">
 
             <div class="button-group">
-                <button type="submit" class="submit">Enviar</button>
-                <button type="reset" class="clear">Borrar</button>
+                <button type="submit">Enviar</button>
+                <button type="reset">Borrar</button>
             </div>
         </form>
     </div>
