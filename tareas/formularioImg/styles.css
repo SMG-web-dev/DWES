@@ -35,7 +35,6 @@ h2 {
 .image-container img {
   max-width: 25em;
   max-height: 25em;
-  border: 1px solid black;
 }
 
 .image-container p {
