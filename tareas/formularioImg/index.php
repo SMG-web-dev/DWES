@@ -22,6 +22,7 @@ function showPlayer()
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Datos del Jugador</title>
+        <link rel="icon" type="image/x-icon" href="calavera.png">
         <link rel="stylesheet" href="styles.css">
     </head>
 
@@ -51,7 +52,7 @@ function showPlayer()
             <?php else: ?>
                 <b>No se subió ninguna imagen.</b>
                 <div class="image-container">
-                    <img src="calavera.png">
+                    <img src="calavera.png" alr="Imagen">
                 </div>
             <?php endif; ?>
         </div>
