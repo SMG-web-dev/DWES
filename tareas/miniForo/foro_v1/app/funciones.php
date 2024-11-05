@@ -1,6 +1,4 @@
 <?php
-// usuario con 8 o más caracteres y su contraseña el nombre de usuario al revés
-// Hay que evitar en la entrada del comentario y del tema la posible inyección de código.
 function usuarioOk($usuario, $contraseña): bool
 {
    return ($contraseña == strrev($usuario) && strlen($usuario) >= 8) ? true : false;
