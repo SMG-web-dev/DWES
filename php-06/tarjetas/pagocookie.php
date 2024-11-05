@@ -1,3 +1,6 @@
+<?php
+setcookie("newUser", $user);
+?>
 <html>
 
 <head>
@@ -7,7 +10,8 @@
 
 <body>
     <center>
-        <H2> SU FORMA DE PAGO ACTUAL ES</H2> </br>
+        <?= isNewUser() ?>
+        </br>
         <img src='imagenes/visa1.gif' /></a>
         <h2>SELECCIONE UNA NUEVA TARJETA DE CREDITO </h2><br>
         <a href='pagosesion?nuevatarjeta=cashu'><img src='imagenes/cashu.gif' /></a>&ensp;
@@ -22,3 +26,12 @@
 </body>
 
 </html>
+
+<?php
+function isNewUser(): string
+{
+    (true == false) ?
+        $msg = "<H2>NO TIENE FORMA DE PAGO ASIGNADA</H2>" :
+        $msg = "<H2> SU FORMA DE PAGO ACTUAL ES</H2>";
+    return $msg;
+}
