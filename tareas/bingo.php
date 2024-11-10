@@ -4,7 +4,6 @@
 <head>
        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
        <meta charset="UTF-8">
-       <!--  Estilos del alumno Alberto Fernández-->
        <style type="text/css">
               table {
                      font-family: arial;
