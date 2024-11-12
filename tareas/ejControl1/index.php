@@ -1,17 +1,22 @@
 <?php
-session_start();
+session_start(
+  [
+    'cookie_lifetime' => 0, // La sesión expirará cuando se cierre el navegador.
+    'gc_maxlifetime' => 300 // Tiempo máximo de duración de la sesión en segundos
+  ]
+);
 include_once('app/funciones.php');
 
 // Control de intentos fallidos
-if (!isset($_SESSION['intentos']))
-  $_SESSION['intentos'] = 0;
+if (!isset($_SESSION['tries']))
+  $_SESSION['tries'] = 0;
 
 
 // Si el formulario es enviado
 if (!empty($_GET['login']) && !empty($_GET['key'])) {
 
   // Si se han superado los intentos fallidos, bloqueamos el acceso
-  if ($_SESSION['intentos'] >= 5) {
+  if ($_SESSION['tries'] >= 5) {
     $contenido = "Acceso bloqueado. Para intentar nuevamente, cierre el navegador o abra una ventana privada.";
     include_once('app/acceso.php');
     exit();
@@ -21,7 +26,7 @@ if (!empty($_GET['login']) && !empty($_GET['key'])) {
   if (userOk($_GET['login'], $_GET['key'])) {
 
     // Reseteamos los intentos fallidos al loguearse correctamente
-    $_SESSION['intentos'] = 0;
+    $_SESSION['tries'] = 0;
 
     // Determinamos el rol del usuario
     if (getUserRol($_GET['login']) == ROL_PROFESOR)
@@ -35,7 +40,7 @@ if (!empty($_GET['login']) && !empty($_GET['key'])) {
     include_once('app/resultado.php');
   } else {
     // Si los datos son incorrectos, incrementamos los intentos fallidos
-    $_SESSION['intentos']++;
+    $_SESSION['tries']++;
     $contenido = "El número de usuario y la contraseña no son válidos.";
     include_once('app/acceso.php');
   }

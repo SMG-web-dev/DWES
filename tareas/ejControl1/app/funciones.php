@@ -1,6 +1,5 @@
 <?php
 require_once('dat/datos.php');
-
 /**
  * Verifica si el código de usuario y la clave coinciden con los registros.
  * @param string $login Código del usuario
@@ -10,7 +9,6 @@ require_once('dat/datos.php');
 function userOk($login, $key): bool
 {
     global $users;
-
     // Verificar que el código existe y la clave coincide
     return isset($users[$login]) && $users[$login][1] === $key;
 }
@@ -23,7 +21,6 @@ function userOk($login, $key): bool
 function getUserRol($login)
 {
     global $users;
-
     // Verificar si el código de usuario existe y retornar el rol correspondiente
     return isset($users[$login]) ? $users[$login][2] : null;
 }
@@ -36,7 +33,6 @@ function getUserRol($login)
 function verNotasAlumno($codigo): string
 {
     global $modules, $notas, $users;
-
     // Verificar si el código de alumno existe
     if (!isset($notas[$codigo]))
         return "<p>El código de alumno no existe.</p>";
@@ -66,7 +62,6 @@ function verNotasAlumno($codigo): string
 function verNotasDeTodos($codigo): string
 {
     global $modules, $notas, $users;
-
     // Verificamos si el usuario tiene rol de profesor
     if (getUserRol($codigo) !== ROL_PROFESOR)
         return "<p>No tienes permisos para acceder a esta información.</p>";
@@ -79,7 +74,6 @@ function verNotasDeTodos($codigo): string
     // Generamos las cabeceras con los nombres de los módulos
     foreach ($modules as $modulo)
         $msg .= "<th>$modulo</th>";
-
     $msg .= "</tr></thead><tbody>";
 
     // Iteramos sobre todos los usuarios y mostramos las notas
@@ -90,7 +84,6 @@ function verNotasDeTodos($codigo): string
         // Añadimos las notas del alumno
         foreach ($notasAlumno as $nota)
             $msg .= "<td>$nota</td>";
-
         $msg .= "</tr>";
     }
     $msg .= "</tbody></table>";
