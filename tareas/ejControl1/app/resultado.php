@@ -9,11 +9,8 @@
 <div id="header">
 <h1>CONSULTA DE NOTAS</h1>
 </div>
-
 <div id="content">
-
 <?= $contenido ?>
-
 </div>
 <button onclick="history.back();"> Volver </button>
 </div>

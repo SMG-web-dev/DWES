@@ -1,31 +1,28 @@
-/* Estilo global para toda la página */
 body {
   font-family: "Arial", sans-serif;
   color: #fff;
   text-align: center;
   margin: 0;
   padding: 0;
-  background-image: url("https://cdn.creazilla.com/photos/3326691/black-background-black-fruits-photo-lg.jpeg"); /* Fondo de frutas */
+  background-image: url("https://cdn.creazilla.com/photos/3326691/black-background-black-fruits-photo-lg.jpeg");
   background-size: auto;
   background-position: center;
 }
 
-/* Encabezado principal */
 h1 {
-  color: #ffeb3b; /* Amarillo frutal */
+  color: #ffeb3b;
   font-size: 3rem;
   font-weight: bold;
   margin-top: 30px;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-/* Subtítulos */
 b {
-  color: #ff9800; /* Naranja brillante */
+  font-weight: bold;
+  margin-top: 15px;
+  color: #ff9800;
   font-size: 1.2rem;
 }
-
-/* Estilo para formularios */
 form {
   margin-top: 20px;
 }
@@ -46,7 +43,6 @@ select {
   margin-left: 5px;
 }
 
-/* Efecto de enfoque en formularios */
 input[type="text"]:focus,
 input[type="number"]:focus,
 select:focus {
@@ -55,7 +51,6 @@ select:focus {
   transition: all 0.5s;
 }
 
-/* Botones de acción */
 input[type="submit"],
 input[type="button"] {
   background-color: #ff9800;
@@ -71,7 +66,6 @@ input[type="button"] {
   transition: all 0.5s;
 }
 
-/* Efecto hover para los botones */
 input[type="submit"]:hover,
 input[type="button"]:hover {
   background-color: #ff5722;
@@ -79,20 +73,18 @@ input[type="button"]:hover {
   transition: all 0.5s;
 }
 
-/* Estilo para la tabla de compra */
 table {
   width: 80%;
   margin: 30px auto;
-  border-collapse: separate; /* Sin colapsar para evitar problemas en los bordes */
+  border-collapse: separate;
   border-spacing: 0;
   background-color: #333;
-  border-radius: 12px; /* Bordes redondeados solo en la tabla */
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.5s ease-in-out;
 }
 
-/* Encabezado de la tabla */
 th {
   background-color: #ff9800;
   color: #fff;
@@ -100,10 +92,9 @@ th {
   font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  border-bottom: 2px solid #e68900; /* Línea divisoria entre encabezado y contenido */
+  border-bottom: 2px solid #e68900;
 }
 
-/* Filas de la tabla */
 td {
   padding: 12px;
   color: #fff;
@@ -112,12 +103,10 @@ td {
   transition: background-color 0.3s, color 0.3s;
 }
 
-/* Filas alternas */
 tr:nth-child(even) td {
   background-color: #444;
 }
 
-/* Efecto de resaltado en hover */
 tr:hover td {
   background-color: #555;
   color: #ffffff;
@@ -125,7 +114,6 @@ tr:hover td {
   transition: transform 0.2s ease;
 }
 
-/* Encabezado borde superior redondeado */
 table thead tr:first-child th:first-child {
   border-top-left-radius: 12px;
 }
@@ -133,7 +121,6 @@ table thead tr:first-child th:last-child {
   border-top-right-radius: 12px;
 }
 
-/* Borde inferior redondeado */
 table tbody tr:last-child td:first-child {
   border-bottom-left-radius: 12px;
 }
@@ -141,7 +128,6 @@ table tbody tr:last-child td:last-child {
   border-bottom-right-radius: 12px;
 }
 
-/* Animación de entrada */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -153,7 +139,6 @@ table tbody tr:last-child td:last-child {
   }
 }
 
-/* Diseño de la página de bienvenida */
 form {
   background-color: rgba(0, 0, 0, 0.7);
   padding: 20px;
@@ -164,14 +149,6 @@ form {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-/* Estilo para el mensaje de la bienvenida */
-b {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-top: 15px;
-}
-
-/* Fondo oscuro en el pie de página */
 footer {
   background-color: #222;
   color: #fff;
