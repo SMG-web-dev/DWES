@@ -15,7 +15,6 @@ function volcarDatos(array $valores)
     $funcion($valores);
 }
 
-// ----------------------------------------------------
 // FICHERO DE TEXT 
 //Carga los datos de un fichero de texto
 function cargarDatostxt(): array
@@ -33,7 +32,7 @@ function cargarDatostxt(): array
         $partes = explode('|', trim($linea));
         // Escribimos la correspondiente fila en tabla
         // La clave es el login  el primer campo del fichero de texto
-        $tabla[$partes[0]] = [ $partes[1], $partes[2], $partes[3]];
+        $tabla[$partes[0]] = [$partes[1], $partes[2], $partes[3]];
     }
     fclose($fich);
     return $tabla;
@@ -43,14 +42,13 @@ function volcarDatostxt(array $tvalores)
 {
     $fich = @fopen(FILEUSER, 'w') or die("ERROR al abrir fichero de usuarios"); // abrimos el fichero para lectura
 
-    foreach ($tvalores as $login => $datos ){
-         $linea = $login.'|';
-         $linea .= implode ('|',$datos);
-         $linea .= "\n";
-         fputs($fich,$linea);
+    foreach ($tvalores as $login => $datos) {
+        $linea = $login . '|';
+        $linea .= implode('|', $datos);
+        $linea .= "\n";
+        fputs($fich, $linea);
     }
     fclose($fich);
-
 }
 
 // ----------------------------------------------------
@@ -58,7 +56,7 @@ function volcarDatostxt(array $tvalores)
 
 function cargarDatoscsv(): array
 {
-   
+
     $tabla = [];
     if (!is_readable(FILEUSER)) {
         // El directorio donde se crea tiene que tener permisos adecuados
@@ -68,7 +66,7 @@ function cargarDatoscsv(): array
     $fich = @fopen(FILEUSER, 'r') or die("ERROR al abrir fichero de usuarios"); // abrimos el fichero para lectura
 
     while ($partes = fgetcsv($fich)) {
-        $tabla[$partes[0]] = [ $partes[1], $partes[2], $partes[3]];
+        $tabla[$partes[0]] = [$partes[1], $partes[2], $partes[3]];
     }
     fclose($fich);
     return $tabla;
@@ -80,67 +78,60 @@ function volcarDatoscsv(array $tvalores)
 
     $fich = @fopen(FILEUSER, 'w') or die("ERROR al abrir fichero de usuarios"); // abrimos el fichero para lectura
 
-    foreach ($tvalores as $login => $datos ){
+    foreach ($tvalores as $login => $datos) {
         // Añadir el login al principio
-         array_unshift($datos, $login);
-         fputcsv($fich,$datos);
+        array_unshift($datos, $login);
+        fputcsv($fich, $datos);
     }
     fclose($fich);
-
 }
 
 // ----------------------------------------------------
 // FICHERO DE JSON
 function cargarDatosjson(): array
 {
-     // Si no existe lo creo
-     $tabla=[];
-     $datosjson = @file_get_contents(FILEUSER) or die("ERROR al abrir fichero de usuarios");
-     $tabla = json_decode($datosjson, true);   
-     return $tabla;
+    // Si no existe lo creo
+    $tabla = [];
+    $datosjson = @file_get_contents(FILEUSER) or die("ERROR al abrir fichero de usuarios");
+    $tabla = json_decode($datosjson, true);
+    return $tabla;
 }
 
 function volcarDatosjson(array $tvalores)
 {
-     
+
     $datosjon = json_encode($tvalores);
-    @file_put_contents(FILEUSER, $datosjon) or die ("Error al escribir en el fichero.");
-    
-
-
+    @file_put_contents(FILEUSER, $datosjon) or die("Error al escribir en el fichero.");
 }
 
-
-
-
 // MUESTRA LOS DATOS DE LA TABLA ALMACENADA EN LA SESSION 
-function mostrarDatos (){
-    
-    $titulos = [ "login","Password","Nombre","Comentario"];
+function mostrarDatos()
+{
+
+    $titulos = ["login", "Password", "Nombre", "Comentario"];
     $msg = "<table>\n";
-     // Identificador de la tabla
+    // Identificador de la tabla
     $msg .= "<tr>";
-    foreach ($titulos as $nombreTitulo){
+    foreach ($titulos as $nombreTitulo) {
         $msg .= "<th>$nombreTitulo</th>";
-    }  
+    }
     $msg .= "</tr>";
     $auto = $_SERVER['PHP_SELF'];
-    
-    foreach ( $_SESSION['tuser'] as $login => $datosusuario ){
+
+    foreach ($_SESSION['tuser'] as $login => $datosusuario) {
         $msg .= "<tr>";
         $msg .= "<td>$login</td>";
-        for ($j=0; $j < count($datosusuario); $j++){
+        for ($j = 0; $j < count($datosusuario); $j++) {
             $msg .= "<td>$datosusuario[$j]</td>";
         }
-        $msg .="<td><a href=\"#\" onclick=\"confirmarBorrar('$datosusuario[1]','$login');\" >Borrar</a></td>\n";
-        $msg .="<td><a href=\"".$auto."?orden=Modificar&id=$login\">Modificar</a></td>\n";
-        $msg .="<td><a href=\"".$auto."?orden=Detalles&id=$login\" >Detalles</a></td>\n";
-        $msg .="</tr>\n";
-        
+        $msg .= "<td><a href=\"#\" onclick=\"confirmarBorrar('$datosusuario[1]','$login');\" >Borrar</a></td>\n";
+        $msg .= "<td><a href=\"" . $auto . "?orden=Modificar&id=$login\">Modificar</a></td>\n";
+        $msg .= "<td><a href=\"" . $auto . "?orden=Detalles&id=$login\" >Detalles</a></td>\n";
+        $msg .= "</tr>\n";
     }
     $msg .= "</table>";
-   
-    return $msg;    
+
+    return $msg;
 }
 /*
  *  Funciones para limpiar la entrada de posibles inyecciones
@@ -150,9 +141,10 @@ function mostrarDatos (){
 // Función para limpiar todos elementos de un array  $_POST / $_GET
 function limpiarArrayEntrada(array &$entrada)
 {
-    // Sin implementar
-    // <<<<  IMPLEMENTAR  >>>>> 
-
+    for ($i = 0; $i < count($entrada) + 1; $i + 2) {
+        array_pop($entrada);
+        array_shift($entrada);
+    }
 }
 
 
@@ -160,5 +152,31 @@ function limpiarArrayEntrada(array &$entrada)
 // evitar ataques  CSRF, Cross-Site Request Forgery
 function checkCSRF()
 {
-    // <<<<  IMPLEMENTAR  >>>>>
+    // Paso 1: Verificar si el token está presente en la solicitud (POST o GET)
+    if (!isset($_POST['csrf_token']) && !isset($_GET['csrf_token'])) {
+        // Si no hay token, la solicitud es inválida
+        die('Solicitud inválida: falta el token CSRF.');
+    }
+
+    // Paso 2: Recuperar el token recibido
+    $token = isset($_POST['csrf_token']) ? $_POST['csrf_token'] : $_GET['csrf_token'];
+
+    // Paso 3: Recuperar el token almacenado en la sesión
+    session_start(); // Asegurarse de que la sesión esté activa
+
+    if (!isset($_SESSION['csrf_token'])) {
+        // Si no hay un token almacenado, la solicitud es inválida
+        die('Solicitud inválida: no se encontró un token CSRF en la sesión.');
+    }
+
+    $session_token = $_SESSION['csrf_token'];
+
+    // Paso 4: Comparar los tokens
+    if (!hash_equals($session_token, $token)) {
+        // Si los tokens no coinciden, detener la ejecución
+        die('Solicitud inválida: el token CSRF no coincide.');
+    }
+
+    // Paso 5: Regenerar el token después de una validación exitosa (mejora seguridad)
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
