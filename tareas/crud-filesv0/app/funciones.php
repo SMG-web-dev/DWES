@@ -133,17 +133,20 @@ function mostrarDatos()
 
     return $msg;
 }
+
 /*
  *  Funciones para limpiar la entrada de posibles inyecciones
  */
 
-
 // Función para limpiar todos elementos de un array  $_POST / $_GET
 function limpiarArrayEntrada(array &$entrada)
 {
-    for ($i = 0; $i < count($entrada) + 1; $i + 2) {
-        array_pop($entrada);
-        array_shift($entrada);
+    foreach ($entrada as $clave) {
+        $entrada[$clave] = htmlspecialchars(
+            $entrada[$clave],
+            ENT_QUOTES,
+            'UTF8'
+        );
     }
 }
 
