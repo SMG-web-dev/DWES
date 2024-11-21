@@ -49,6 +49,7 @@ function volcarDatostxt(array $tvalores)
         fputs($fich, $linea);
     }
     fclose($fich);
+    session_abort();
 }
 
 // ----------------------------------------------------
@@ -84,6 +85,7 @@ function volcarDatoscsv(array $tvalores)
         fputcsv($fich, $datos);
     }
     fclose($fich);
+    session_abort();
 }
 
 // ----------------------------------------------------
@@ -102,12 +104,12 @@ function volcarDatosjson(array $tvalores)
 
     $datosjon = json_encode($tvalores);
     @file_put_contents(FILEUSER, $datosjon) or die("Error al escribir en el fichero.");
+    session_abort();
 }
 
 // MUESTRA LOS DATOS DE LA TABLA ALMACENADA EN LA SESSION 
 function mostrarDatos()
 {
-
     $titulos = ["login", "Password", "Nombre", "Comentario"];
     $msg = "<table>\n";
     // Identificador de la tabla
@@ -155,31 +157,29 @@ function limpiarArrayEntrada(array &$entrada)
 // evitar ataques  CSRF, Cross-Site Request Forgery
 function checkCSRF()
 {
-    // Paso 1: Verificar si el token está presente en la solicitud (POST o GET)
-    if (!isset($_POST['csrf_token']) && !isset($_GET['csrf_token'])) {
-        // Si no hay token, la solicitud es inválida
+    // Asegurarse de que la sesión esté activa
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start(); // Iniciar la sesión si no está activa
+    }
+
+    // Verificar si el token está presente en la solicitud
+    if (empty($_POST['dtoken']) && empty($_GET['dtoken'])) {
         die('Solicitud inválida: falta el token CSRF.');
     }
 
-    // Paso 2: Recuperar el token recibido
-    $token = isset($_POST['csrf_token']) ? $_POST['csrf_token'] : $_GET['csrf_token'];
+    // Recuperar el token recibido
+    $token = $_POST['dtoken'] ?? $_GET['dtoken'];
 
-    // Paso 3: Recuperar el token almacenado en la sesión
-    session_start(); // Asegurarse de que la sesión esté activa
-
-    if (!isset($_SESSION['csrf_token'])) {
-        // Si no hay un token almacenado, la solicitud es inválida
+    // Verificar si el token está almacenado en la sesión
+    if (empty($_SESSION['dtoken'])) {
         die('Solicitud inválida: no se encontró un token CSRF en la sesión.');
     }
 
-    $session_token = $_SESSION['csrf_token'];
-
-    // Paso 4: Comparar los tokens
-    if (!hash_equals($session_token, $token)) {
-        // Si los tokens no coinciden, detener la ejecución
+    // Comparar los tokens
+    if (!hash_equals($_SESSION['dtoken'], $token)) {
         die('Solicitud inválida: el token CSRF no coincide.');
     }
 
-    // Paso 5: Regenerar el token después de una validación exitosa (mejora seguridad)
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    // Regenerar el token para futuras solicitudes
+    $_SESSION['dtoken'] = md5(uniqid(mt_rand(), true));
 }

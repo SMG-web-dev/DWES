@@ -15,7 +15,7 @@ $_SESSION["token"] = md5(uniqid(mt_rand(), true));
     <meta charset="UTF-8">
     <title>CRUD DE USUARIOS</title>
     <link href="web/default.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="web/js/funciones.js"></script>
+    <script type="text/javascript" src="./web/js/funciones.js"></script>
 </head>
 
 <body>
@@ -31,7 +31,7 @@ $_SESSION["token"] = md5(uniqid(mt_rand(), true));
                     <tr>
                         <td>Nombre </td>
                         <td>
-                            <input type="text" name="nombre" value="<?= $nombre ?>"  <?= ($orden == "Detalles") ? "readonly" : "" ?> size="20" autofocus>
+                            <input type="text" name="nombre" value="<?= $nombre ?>" <?= ($orden == "Detalles") ? "readonly" : "" ?> size="20" autofocus>
                         </td>
                     </tr>
                     <tr>
@@ -43,14 +43,14 @@ $_SESSION["token"] = md5(uniqid(mt_rand(), true));
                     <tr>
                         <td>Contraseña </td>
                         <td>
-                            <input type="password" name="clave" id="clave_id"  value="<?= $clave ?>" <?= ($orden == "Detalles") ? "readonly" : "" ?> size=10>
+                            <input type="password" name="clave" id="clave_id" value="<?= $clave ?>" <?= ($orden == "Detalles") ? "readonly" : "" ?> size=10>
                             <input type="checkbox" onclick="mostrarclave()">Mostrar password
                         </td>
                     </tr>
                     <tr>
                         <td>Comentario </td>
                         <td>
-                            <input type="text" name="comentario"  value="<?= $comentario ?>" <?= ($orden == "Detalles") ? "readonly" : "" ?> size=20>
+                            <input type="text" name="comentario" value="<?= $comentario ?>" <?= ($orden == "Detalles") ? "readonly" : "" ?> size=20>
                         </td>
                     </tr>
                 </table>
