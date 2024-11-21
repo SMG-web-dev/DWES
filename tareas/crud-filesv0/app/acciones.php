@@ -20,7 +20,7 @@ function accionBorrar($id)
 }
 
 
-// Termina: Cierra sesión y vuelva los datos
+// Termina: Cierra sesión y vuelca los datos
 function accionTerminar()
 {
     volcarDatos($_SESSION['tuser']);
@@ -104,10 +104,10 @@ function accionPostAlta()
 
     // Verificar si todos los campos están completos
     if (
-        !isset($_POST['login']) || $_POST['login'] === '' ||
-        !isset($_POST['clave']) || $_POST['clave'] === '' ||
-        !isset($_POST['nombre']) || $_POST['nombre'] === '' ||
-        !isset($_POST['comentario']) || $_POST['comentario'] === ''
+        empty($_POST['login']) ||
+        $_POST['clave'] === '' ||
+        $_POST['nombre'] === '' ||
+        $_POST['comentario'] === ''
     ) {
         $_SESSION['msg'] = "Rellene todos los campos requeridos.";
         return;

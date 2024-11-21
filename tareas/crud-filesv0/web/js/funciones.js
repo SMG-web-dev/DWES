@@ -22,5 +22,11 @@ function mostrarclave() {
  *  Pide confirmación de volcar los datos 
  */
 function confirmarVolcar() {
-  confirm("Confirma para volcar los datos:")
+  if (confirm("Confirma para volcar los datos:")) {
+    console.log("Datos volcados correctamente.");
+    return true;
+  } else {
+    console.log("Operación cancelada.");
+    return false;
+  }
 }

@@ -3,7 +3,7 @@ body {
   text-align: justify;
   font-family: Tahoma, Geneva, sans-serif;
   font-size: 14px;
-  color: #757e82;
+  color: #ffffff;
 }
 
 #container {
@@ -52,7 +52,7 @@ li {
 }
 
 #msg {
-  color: #429;
+  color: rgb(72, 0, 255);
   text-align: center;
 }
 #aviso {
@@ -61,7 +61,7 @@ li {
 }
 
 a {
-  color: #429;
+  color: rgb(72, 0, 255);
   text-decoration: none;
 }
 textarea {

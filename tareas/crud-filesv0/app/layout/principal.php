@@ -13,7 +13,9 @@
         <div id="header">
             <h1>GESTIÓN DE USUARIOS versión 1.0</h1>
         </div>
-        <div id="msg"> <p> <?= $msg ?></p></div>
+        <div id="msg">
+            <p> <?= $msg ?></p>
+        </div>
         <div id="content">
             <?= $contenido ?>
             <form>
