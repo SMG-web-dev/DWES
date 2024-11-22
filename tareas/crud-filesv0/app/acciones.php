@@ -80,7 +80,6 @@ function accionPostModificar()
 }
 
 
-
 // Muestra  el formulario con los datos vacios para realizar una alta
 function accionAlta()
 {
