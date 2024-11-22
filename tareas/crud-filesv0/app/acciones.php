@@ -29,7 +29,7 @@ function accionTerminar()
 }
 
 
-// Muestra un formularios con los datos de un usuario de la posición $id de la tabla
+// Muestra un formulario con los datos de un usuario de la posición $id de la tabla
 function accionDetalles($id)
 {
     $login = $id;
@@ -69,9 +69,9 @@ function accionPostModificar()
 
     // Actualizar los datos del usuario
     $_SESSION['tuser'][$id] = [
-        'clave' => $_POST['clave'],
-        'nombre' => $_POST['nombre'],
-        'comentario' => $_POST['comentario']
+        $_POST['clave'],
+        $_POST['nombre'],
+        $_POST['comentario']
     ];
 
     $_SESSION['msg'] = "Usuario con login $id actualizado.";
@@ -120,12 +120,11 @@ function accionPostAlta()
     }
 
     // Agregar el nuevo usuario
-    $nuevo = [
-        'clave' => $_POST['clave'],
-        'nombre' => $_POST['nombre'],
-        'comentario' => $_POST['comentario']
+    $_SESSION['tuser'][$login] = [
+        $_POST['clave'],
+        $_POST['nombre'],
+        $_POST['comentario']
     ];
-    $_SESSION['tuser'][$login] = $nuevo;
 
     $_SESSION['msg'] = "Nuevo usuario añadido.";
 }

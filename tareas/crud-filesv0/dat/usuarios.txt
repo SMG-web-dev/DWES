@@ -1,3 +1,0 @@
-0|1234|Fernando Pérez|Administrador Principal
-1|123$%09|Ana Diáz|Jefa de Proyecto
-2|1234|Sergio Manjon Garcia|Administrador Principal
