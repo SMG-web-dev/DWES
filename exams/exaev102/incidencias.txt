@@ -1,0 +1,8 @@
+15:11:2020 09:21,Jesús,No hay conexión con la Base de datos,1,127.0.0.1
+25:11:2020 16:15,Pedro,Cambio de configuración,1,192.168.0.15
+25:11:2024 11:21,Jesusito,La tengo xica,1,::1
+13:11:2020 10:10,Ramón,Error en el proxy,2,80.44.12.4
+18:10:2020 14:05,María,Actualización de software,2,10.0.0.5
+02:10:2020 21:52,Ana,Cambiar pantalla en A206,3,192.168.12.2
+11:10:2020 11:00,Juan,Reinicio del servidor,3,192.168.1.10
+23:11:2020 15:40,Ana,Instalar java,4,192.168.15.23
