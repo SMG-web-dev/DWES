@@ -1,14 +1,20 @@
 <?php
 // Clase para manejar la conexión a la base de datos
 class AccesoDatos {
+    private static $conexion = null;
+
     // Método para establecer la conexión a la base de datos
     public static function conectar() {
-        // Implementación para conectar a la base de datos
+        if (self::$conexion === null) {
+            self::$conexion = new PDO('mysql:host=localhost;dbname=Clientes', 'root', 'root');
+            self::$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        }
+        return self::$conexion;
     }
 
     // Método para cerrar la conexión a la base de datos
     public static function closeModelo() {
-        // Implementación para cerrar la conexión
+        self::$conexion = null;
     }
 }
 

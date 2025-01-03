@@ -12,27 +12,37 @@ require_once  "app/AccesoDAO.php";
 define('FPAG', 10);
 
 // Div con contenido
-$contenido="";
-if ($_SERVER['REQUEST_METHOD'] == "GET" ){
-    
-    if ( isset($_GET['orden']) && in_array($_GET['orden'], ['Nuevo', 'Borrar', 'Modificar', 'Detalles', 'Terminar', 'Primero', 'Siguiente', 'Anterior', 'Ultimo'])) {
+$contenido = "";
+if ($_SERVER['REQUEST_METHOD'] == "GET") {
+    if (isset($_GET['orden']) && in_array($_GET['orden'], ['Nuevo', 'Borrar', 'Modificar', 'Detalles', 'Terminar', 'Primero', 'Siguiente', 'Anterior', 'Ultimo'])) {
         switch ($_GET['orden']) {
-            case "Nuevo"    : accionAlta(); break;
-            case "Borrar"   : accionBorrar   (filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT)); break;
-            case "Modificar": accionModificar(filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT)); break;
-            case "Detalles" : accionDetalles (filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT)); break;
-            case "Terminar" : accionTerminar(); break;
+            case "Nuevo":
+                accionCrear();
+                break;
+            case "Borrar":
+                accionBorrar(filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT));
+                break;
+            case "Modificar":
+                accionModificar(filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT));
+                break;
+            case "Detalles":
+                accionDetalles(filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT));
+                break;
+            case "Terminar":
+                accionTerminar();
+                break;
         }
     }
-} 
-// POST Formulario de alta o de modificación
-else {
-    if (  isset($_POST['orden']) && in_array($_POST['orden'], ['Nuevo', 'Modificar', 'Detalles'])) {
-        limpiarArrayEntrada($_POST); //Evito la posible inyección de código
-        switch($_POST['orden']) {
-            case "Nuevo"    : accionPostAlta(); break;
-            case "Modificar": accionPostModificar(); break;
-            case "Detalles":; // No hago nada
+} else {
+    if (isset($_POST['orden']) && in_array($_POST['orden'], ['Nuevo', 'Modificar'])) {
+        limpiarArrayEntrada($_POST); // Evito la posible inyección de código
+        switch ($_POST['orden']) {
+            case "Nuevo":
+                accionPostAlta(); // Asegúrate de que esta función esté definida
+                break;
+            case "Modificar":
+                accionPostModificar(); // Asegúrate de que esta función esté definida
+                break;
         }
     }
 }
@@ -48,7 +58,6 @@ $dbh = AccesoDAO::getModelo();
 try {
     $numclientes = $dbh->totalClientes();
 } catch (Exception $e) {
-    // Manejo de error, podrías registrar el error o mostrar un mensaje
     $numclientes = 0; // O manejar de otra manera
 }
 
@@ -84,8 +93,6 @@ if (isset($_GET['orden'])) {
 // Obtener los clientes para mostrar
 $tclientes = $dbh->getClientes($primero, FPAG);
 $contenido .= mostrarDatos($tclientes);
-
-
 
 // Mostrar la página principal
 include_once "app/layout/principal.php";
