@@ -1,6 +1,5 @@
-<?php 
-define('SERVER_DB','localhost');
-define('DB_USER','root');
-define('DB_PASSWD','root');
-define('DATABASE','Clientes');
-
+<?php
+define('SERVER_DB', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASSWD', '');
+define('DATABASE', 'Clientes');

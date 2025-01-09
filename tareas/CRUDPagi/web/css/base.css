@@ -1,0 +1,30 @@
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color var(--transition-speed);
+}
+
+#container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 40px;
+  background: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: box-shadow var(--transition-speed);
+}
+
+#header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#header h1 {
+  font-size: 28px;
+  margin: 0;
+  color: var(--heading-color);
+  transition: color var(--transition-speed);
+}

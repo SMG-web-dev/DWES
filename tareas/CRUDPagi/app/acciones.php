@@ -4,7 +4,8 @@ include_once 'AccesoDatos.php';
 include_once 'AccesoDAO.php';
 
 // Función para borrar un cliente
-function accionBorrar($id) {
+function accionBorrar($id)
+{
     $conexion = AccesoDatos::conectar();
     $stmt = $conexion->prepare("DELETE FROM clientes WHERE id = :id");
     $stmt->bindParam(':id', $id);
@@ -12,102 +13,149 @@ function accionBorrar($id) {
 }
 
 // Función para terminar la sesión
-function accionTerminar() {
+function accionTerminar()
+{
     session_start();
     session_destroy();
 }
 
-// Función para dar de alta un nuevo cliente
-function accionAlta($nombre, $email) {
-    $conexion = AccesoDatos::conectar();
-    $stmt = $conexion->prepare("INSERT INTO clientes (nombre, email) VALUES (:nombre, :email)");
-    $stmt->bindParam(':nombre', $nombre);
-    $stmt->bindParam(':email', $email);
-    $stmt->execute();
-}
-
 // Función para mostrar los detalles de un cliente
-function accionDetalles($id) {
+function accionDetalles($id)
+{
     $conexion = AccesoDatos::conectar();
     $stmt = $conexion->prepare("SELECT * FROM clientes WHERE id = :id");
     $stmt->bindParam(':id', $id);
     $stmt->execute();
     $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
     // Incluir la plantilla de detalles
     include __DIR__ . '/layout/detalles.php';
 }
 
 // Función para modificar un cliente
-function accionModificar($id) {
-    $conexion = AccesoDatos::conectar();
-    $stmt = $conexion->prepare("SELECT * FROM clientes WHERE id = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    // Verificar si se recibió un formulario de modificación
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Obtener los datos del formulario
-        $nombre = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING);
-        $apellido = filter_input(INPUT_POST, 'apellido', FILTER_SANITIZE_STRING);
-        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-        $genero = filter_input(INPUT_POST, 'genero', FILTER_SANITIZE_STRING);
-        $telefono = filter_input(INPUT_POST, 'telefono', FILTER_SANITIZE_STRING);
-
-        // Validar los datos
-        if ($nombre && $apellido && $email && $genero) {
-            // Usar la función de AccesoDAO para actualizar el cliente
-            $dbh = AccesoDAO::getModelo();
-            try {
-                $dbh->actualizarCliente($id, $nombre, $apellido, $email, $genero, '', $telefono); // Pasar IP como vacío si no se tiene
-                $_SESSION['message'] = "Cliente actualizado exitosamente."; // Mensaje de éxito
-                header("Location: index.php"); // Redirigir a la lista de clientes
-                exit();
-            } catch (Exception $e) {
-                $_SESSION['error'] = "Error al actualizar el cliente: " . $e->getMessage(); // Mensaje de error
-            }
-        } else {
-            $_SESSION['error'] = "Por favor, complete todos los campos.";
-        }
+// Función para dar de alta un nuevo cliente
+function accionAlta()
+{
+    // Si no es una petición POST, mostrar el formulario
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        include "layout/nuevo.php";
+        return;
     }
 
-    // Incluir la plantilla de modificación
-    include 'layout/modificar.php';
+    // Procesar el formulario cuando se envía por POST
+    try {
+        // Validar y recoger datos del formulario
+        $datos = [
+            'nombre' => isset($_POST['first_name']) ? trim($_POST['first_name']) : '',
+            'apellido' => isset($_POST['last_name']) ? trim($_POST['last_name']) : '',
+            'email' => isset($_POST['email']) ? trim($_POST['email']) : '',
+            'genero' => isset($_POST['gender']) ? trim($_POST['gender']) : '',
+            'telefono' => isset($_POST['telefono']) ? trim($_POST['telefono']) : '',
+            'ip_address' => $_SERVER['REMOTE_ADDR']
+        ];
+
+        // Validar que los campos requeridos no estén vacíos
+        foreach ($datos as $campo => $valor) {
+            if (empty($valor) && $campo !== 'telefono') {
+                throw new Exception("El campo $campo es obligatorio");
+            }
+        }
+
+        // Validar formato de email
+        if (!filter_var($datos['email'], FILTER_VALIDATE_EMAIL)) {
+            throw new Exception("El formato del email no es válido");
+        }
+
+        // Obtener instancia del DAO y realizar la inserción
+        $dao = AccesoDAO::getModelo();
+        $dao->insertarCliente(
+            $datos['nombre'],
+            $datos['apellido'],
+            $datos['email'],
+            $datos['genero'],
+            $datos['ip_address'],
+            $datos['telefono']
+        );
+
+        // Redirigir con mensaje de éxito
+        $_SESSION['mensaje'] = "Cliente añadido correctamente";
+        header("Location: index.php");
+        exit();
+    } catch (Exception $e) {
+        $_SESSION['error'] = $e->getMessage();
+        // Mantener los datos introducidos en caso de error
+        $_SESSION['datos_form'] = $datos;
+        header("Location: index.php?op=nuevo");
+        exit();
+    }
 }
 
-// Función para crear un nuevo cliente
-function accionCrear() {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Obtener los datos del formulario
-        $nombre = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING);
-        $apellido = filter_input(INPUT_POST, 'apellido', FILTER_SANITIZE_STRING);
-        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-        $genero = filter_input(INPUT_POST, 'genero', FILTER_SANITIZE_STRING);
-        $telefono = filter_input(INPUT_POST, 'telefono', FILTER_SANITIZE_STRING);
+// Función para modificar un cliente existente
+function accionModificar($id)
+{
+    $dao = AccesoDAO::getModelo();
 
-        // Validar los datos
-        if ($nombre && $apellido && $email && $genero && $telefono) {
-            // Usar la función de AccesoDAO para insertar el cliente
-            $dbh = AccesoDAO::getModelo();
-            try {
-                $dbh->insertarCliente($nombre, $apellido, $email, $genero, '', $telefono); // Pasar IP como vacío si no se tiene
-                $_SESSION['message'] = "Cliente agregado exitosamente."; // Mensaje de éxito
-            } catch (Exception $e) {
-                $_SESSION['error'] = "Error al agregar el cliente: " . $e->getMessage(); // Mensaje de error
+    // Si no es una petición POST, mostrar el formulario con los datos actuales
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        try {
+            $cliente = $dao->getClientePorId($id);
+            if (!$cliente) {
+                throw new Exception("Cliente no encontrado");
             }
-
-            // Redirigir a la lista de clientes
+            include "layout/modificar.php";
+            return;
+        } catch (Exception $e) {
+            $_SESSION['error'] = $e->getMessage();
             header("Location: index.php");
             exit();
-        } else {
-            // Manejar error de validación
-            $_SESSION['error'] = "Por favor, complete todos los campos.";
         }
     }
 
-    // Mostrar el formulario para crear un nuevo cliente
-    include 'layout/nuevo.php';
+    // Procesar el formulario cuando se envía por POST
+    try {
+        // Validar y recoger datos del formulario
+        $datos = [
+            'id' => $id,
+            'nombre' => isset($_POST['first_name']) ? trim($_POST['first_name']) : '',
+            'apellido' => isset($_POST['last_name']) ? trim($_POST['last_name']) : '',
+            'email' => isset($_POST['email']) ? trim($_POST['email']) : '',
+            'genero' => isset($_POST['gender']) ? trim($_POST['gender']) : '',
+            'telefono' => isset($_POST['telefono']) ? trim($_POST['telefono']) : '',
+            'ip_address' => $_SERVER['REMOTE_ADDR']
+        ];
+
+        // Validar que los campos requeridos no estén vacíos
+        foreach ($datos as $campo => $valor) {
+            if (empty($valor) && $campo !== 'telefono' && $campo !== 'ip_address') {
+                throw new Exception("El campo $campo es obligatorio");
+            }
+        }
+
+        // Validar formato de email
+        if (!filter_var($datos['email'], FILTER_VALIDATE_EMAIL)) {
+            throw new Exception("El formato del email no es válido");
+        }
+
+        // Realizar la actualización
+        $dao->actualizarCliente(
+            $datos['id'],
+            $datos['nombre'],
+            $datos['apellido'],
+            $datos['email'],
+            $datos['genero'],
+            $datos['ip_address'],
+            $datos['telefono']
+        );
+
+        // Redirigir con mensaje de éxito
+        $_SESSION['mensaje'] = "Cliente modificado correctamente";
+        header("Location: index.php");
+        exit();
+    } catch (Exception $e) {
+        $_SESSION['error'] = $e->getMessage();
+        // Mantener los datos introducidos en caso de error
+        $_SESSION['datos_form'] = $datos;
+        header("Location: index.php?op=modificar&id=$id");
+        exit();
+    }
 }
-
-

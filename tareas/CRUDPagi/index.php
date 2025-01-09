@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     if (isset($_GET['orden']) && in_array($_GET['orden'], ['Nuevo', 'Borrar', 'Modificar', 'Detalles', 'Terminar', 'Primero', 'Siguiente', 'Anterior', 'Ultimo'])) {
         switch ($_GET['orden']) {
             case "Nuevo":
-                accionCrear();
+                accionAlta();
                 break;
             case "Borrar":
                 accionBorrar(filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT));
@@ -96,7 +96,3 @@ $contenido .= mostrarDatos($tclientes);
 
 // Mostrar la página principal
 include_once "app/layout/principal.php";
-
-
-
-

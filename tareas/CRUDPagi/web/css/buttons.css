@@ -1,0 +1,35 @@
+button,
+.button {
+  padding: 10px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--primary-color);
+  color: var(--heading-color);
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  transition: background-color var(--transition-speed),
+    transform var(--transition-speed), box-shadow var(--transition-speed);
+  text-decoration: none;
+}
+
+button:hover,
+.button:hover {
+  background-color: var(--button-hover-color);
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.modal-footer .button {
+  padding: 12px;
+  margin: 5px 0;
+  width: 10%;
+}
