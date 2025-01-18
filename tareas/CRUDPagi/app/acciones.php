@@ -8,14 +8,17 @@ function accionBorrar($id)
         $cliente = $db->getClientePorId($id);
         if (!$cliente) {
             $_SESSION['msg'] = "Cliente no existe o ya ha sido eliminado.";
+            $_SESSION['msg_type'] = 'error';
             return;
         }
 
         // Eliminar el cliente
         $db->borrarCliente($id);
         $_SESSION['msg'] = "Cliente eliminado correctamente.";
+        $_SESSION['msg_type'] = 'success';
     } catch (Exception $e) {
         $_SESSION['msg'] = "Error al eliminar el cliente: " . $e->getMessage();
+        $_SESSION['msg_type'] = 'error';
     }
 }
 
@@ -24,6 +27,7 @@ function accionTerminar()
     AccesoDAO::closeModelo();
     session_destroy();
     $_SESSION['msg'] = "Sesión finalizada correctamente";
+    $_SESSION['msg_type'] = 'success';
 }
 
 function accionDetalles($id)
@@ -33,12 +37,14 @@ function accionDetalles($id)
         $cliente = $db->getClientePorId($id);
         if (!$cliente) {
             $_SESSION['msg'] = "Cliente no encontrado.";
+            $_SESSION['msg_type'] = 'error';
             header("Location: index.php");
             return;
         }
         include_once "app/layout/detalles.php";
     } catch (Exception $e) {
         $_SESSION['msg'] = "Error al obtener los detalles del cliente: " . $e->getMessage();
+        $_SESSION['msg_type'] = 'error';
         header("Location: index.php");
     }
 }
@@ -50,12 +56,14 @@ function accionModificar($id)
         $cliente = $db->getClientePorId($id);
         if (!$cliente) {
             $_SESSION['msg'] = "Cliente no encontrado.";
+            $_SESSION['msg_type'] = 'error';
             header("Location: index.php");
             return;
         }
         include_once "app/layout/modificar.php";
     } catch (Exception $e) {
         $_SESSION['msg'] = "Error al obtener los datos del cliente: " . $e->getMessage();
+        $_SESSION['msg_type'] = 'error';
         header("Location: index.php");
     }
 }
@@ -71,6 +79,7 @@ function accionPostModificar()
             // Verificar campos obligatorios
             if (empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['email'])) {
                 $_SESSION['msg'] = "Los campos nombre, apellido y email son obligatorios.";
+                $_SESSION['msg_type'] = 'error';
                 header("Location: index.php");
                 return;
             }
@@ -79,6 +88,7 @@ function accionPostModificar()
             $id = filter_var($_POST['id'], FILTER_VALIDATE_INT);
             if (!$id) {
                 $_SESSION['msg'] = "ID de cliente no válido.";
+                $_SESSION['msg_type'] = 'error';
                 header("Location: index.php");
                 return;
             }
@@ -95,8 +105,10 @@ function accionPostModificar()
             );
 
             $_SESSION['msg'] = "Cliente actualizado correctamente.";
+            $_SESSION['msg_type'] = 'success';
         } catch (Exception $e) {
             $_SESSION['msg'] = "Error al modificar el cliente: " . $e->getMessage();
+            $_SESSION['msg_type'] = 'error';
         }
     }
     header("Location: index.php");
@@ -118,6 +130,7 @@ function accionPostAlta()
             // Verificar campos obligatorios
             if (empty($_POST['first_name']) || empty($_POST['last_name']) || empty($_POST['email'])) {
                 $_SESSION['msg'] = "Los campos nombre, apellido y email son obligatorios.";
+                $_SESSION['msg_type'] = 'error';
                 header("Location: index.php?orden=Nuevo");
                 return;
             }
@@ -133,8 +146,10 @@ function accionPostAlta()
             );
 
             $_SESSION['msg'] = "Nuevo cliente añadido correctamente.";
+            $_SESSION['msg_type'] = 'success';
         } catch (Exception $e) {
             $_SESSION['msg'] = "Error al añadir el cliente: " . $e->getMessage();
+            $_SESSION['msg_type'] = 'error';
             header("Location: index.php?orden=Nuevo");
             return;
         }

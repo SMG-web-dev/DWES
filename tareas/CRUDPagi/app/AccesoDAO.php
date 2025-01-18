@@ -4,9 +4,7 @@ require_once "Cliente.php";
 
 /**
  * Clase AccesoDAO
- * 
  * Clase que se encarga de acceder a la base de datos y obtener los datos de los clientes
- * 
  */
 
 class AccesoDAO
@@ -96,7 +94,20 @@ class AccesoDAO
     public function insertarCliente($nombre, $apellido, $email, $genero, $ip_address, $telefono)
     {
         try {
-            $stmt = $this->dbh->prepare("INSERT INTO Clientes (first_name, last_name, email, gender, ip_address, telefono) VALUES (:nombre, :apellido, :email, :genero, :ip_address, :telefono)");
+            // Find the lowest available ID
+            $stmt = $this->dbh->prepare("SELECT MIN(t1.id + 1) FROM Clientes t1 LEFT JOIN Clientes t2 ON t1.id + 1 = t2.id WHERE t2.id IS NULL");
+            $stmt->execute();
+            $nextId = $stmt->fetchColumn();
+
+            // If no gaps, get the next ID by counting the rows
+            if (!$nextId) {
+                $stmt = $this->dbh->prepare("SELECT COUNT(*) FROM Clientes");
+                $stmt->execute();
+                $nextId = $stmt->fetchColumn() + 1;
+            }
+
+            $stmt = $this->dbh->prepare("INSERT INTO Clientes (id, first_name, last_name, email, gender, ip_address, telefono) VALUES (:id, :nombre, :apellido, :email, :genero, :ip_address, :telefono)");
+            $stmt->bindParam(':id', $nextId);
             $stmt->bindParam(':nombre', $nombre);
             $stmt->bindParam(':apellido', $apellido);
             $stmt->bindParam(':email', $email);

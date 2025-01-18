@@ -1,10 +1,11 @@
 <?php
 
-// MUESTRA TODOS LOS USUARIOS
 function mostrarDatos($clientes)
 {
-    $html = '<table>';
-    $html .= '<tr><th>ID</th><th>Nombre</th><th>Apellido</th><th>Email</th><th>Acciones</th></tr>';
+    $html = '<div class="table-responsive">'; // Added for responsiveness
+    $html .= '<table id="client-table">';
+    $html .= '<thead><tr><th>ID</th><th>Nombre</th><th>Apellido</th><th>Email</th><th>Género</th><th>Teléfono</th><th>IP</th><th>Acciones</th></tr></thead>';
+    $html .= '<tbody>';
 
     foreach ($clientes as $cliente) {
         $html .= '<tr>';
@@ -12,7 +13,10 @@ function mostrarDatos($clientes)
         $html .= '<td>' . $cliente->first_name . '</td>';
         $html .= '<td>' . $cliente->last_name . '</td>';
         $html .= '<td>' . $cliente->email . '</td>';
-        $html .= '<td>';
+        $html .= '<td>' . $cliente->gender . '</td>';
+        $html .= '<td>' . $cliente->telefono . '</td>';
+        $html .= '<td>' . $cliente->ip_address . '</td>';
+        $html .= '<td class="action-column">';
         $html .= '<div class="button-group">'; // Agrupar botones de acción 
         $html .= '<a class="button" href="index.php?orden=Detalles&id=' . $cliente->id . '"><i class="fas fa-info-circle"></i></a> ';
         $html .= '<a class="button" href="index.php?orden=Modificar&id=' . $cliente->id . '"><i class="fas fa-edit"></i></a> ';
@@ -22,22 +26,19 @@ function mostrarDatos($clientes)
         $html .= '</tr>';
     }
 
+    $html .= '</tbody>';
     $html .= '</table>';
+    $html .= '</div>'; // Close table-responsive
     return $html;
 }
 
-/*
- *  Funciones para limpiar la entrada de posibles inyecciones
- */
-
 function limpiarEntrada(string $entrada): string
 {
-    $salida = trim($entrada); // Elimina espacios antes y después de los datos
-    $salida = strip_tags($salida); // Elimina marcas
+    $salida = trim($entrada);
+    $salida = strip_tags($salida);
     return $salida;
 }
 
-// Función para limpiar todos elementos de un array
 function limpiarArrayEntrada(array &$entrada)
 {
     foreach ($entrada as $key => $value) {

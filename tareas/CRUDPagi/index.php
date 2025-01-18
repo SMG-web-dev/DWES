@@ -13,6 +13,12 @@ define('FPAG', 10);
 
 // Div con contenido
 $contenido = "";
+
+// Check for msg_type in query parameters and set it in session
+if (isset($_GET['msg_type'])) {
+    $_SESSION['msg_type'] = $_GET['msg_type'];
+}
+
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
     if (isset($_GET['orden']) && in_array($_GET['orden'], ['Nuevo', 'Borrar', 'Modificar', 'Detalles', 'Terminar', 'Primero', 'Siguiente', 'Anterior', 'Ultimo'])) {
         switch ($_GET['orden']) {
@@ -47,25 +53,22 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     }
 }
 
-// Lógica de paginación
+// Lógica de paginación (igual que antes)
 if (!isset($_SESSION['posini'])) {
     $_SESSION['posini'] = 0;
 }
 
 $dbh = AccesoDAO::getModelo();
 
-// Manejo de errores al obtener el total de clientes
 try {
     $numclientes = $dbh->totalClientes();
 } catch (Exception $e) {
-    $numclientes = 0; // O manejar de otra manera
+    $numclientes = 0;
 }
 
-// Cálculo de la posición final
 $ultimo = max(0, $numclientes - FPAG);
 $primero = $_SESSION['posini'];
 
-// Manejo de la paginación
 if (isset($_GET['orden'])) {
     switch ($_GET['orden']) {
         case "Primero":
@@ -90,9 +93,7 @@ if (isset($_GET['orden'])) {
     $_SESSION['posini'] = $primero;
 }
 
-// Obtener los clientes para mostrar
 $tclientes = $dbh->getClientes($primero, FPAG);
 $contenido .= mostrarDatos($tclientes);
 
-// Mostrar la página principal
 include_once "app/layout/principal.php";
