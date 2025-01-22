@@ -1,0 +1,1 @@
+1- Mostrar e implementar en detalles y en modificar la opción de siguiente y anterior
